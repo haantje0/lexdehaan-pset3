@@ -20,10 +20,12 @@ public class HttpRequestHelper {
         String result = "";
         String chosenTag = params[0];
 
+        // make theurl
         URL url = new URL("http://www.omdbapi.com/?t=" + chosenTag);
 
         HttpURLConnection connect;
 
+        // get result
         if (url != null) {
             try {
                 connect = (HttpURLConnection) url.openConnection();
@@ -46,6 +48,7 @@ public class HttpRequestHelper {
 
     public static Bitmap getBitmapFromURL(String... src) {
         try {
+            // get bitmap
             URL url = new URL(src[0]);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);

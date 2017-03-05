@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 public class MovieView extends AppCompatActivity {
 
+    // set some variables
     ImageView poster;
     TextView title;
     TextView year;
     TextView plot;
     Button addbutton;
     Bundle movie;
-
     Boolean add;
 
     @Override
@@ -27,9 +27,11 @@ public class MovieView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_view);
 
+        // get intent
         Intent intent = getIntent();
         movie = intent.getExtras();
 
+        // change the add/delete button
         add = movie.getBoolean("add");
         addbutton = (Button) findViewById(R.id.addButton);
         if (add == true){
@@ -39,8 +41,10 @@ public class MovieView extends AppCompatActivity {
             addbutton.setText("delete");
         }
 
+        // get the movie poster
         GetMoviePoster();
 
+        // set the data
         title = (TextView) findViewById(R.id.movie_title);
         title.setText(movie.getString("movietitle"));
 
@@ -51,16 +55,19 @@ public class MovieView extends AppCompatActivity {
         plot.setText(movie.getString("movieplot"));
     }
 
+    // get the poster in an asynctask
     private void GetMoviePoster() {
         PosterAsyncTask posterAsyncTask = new PosterAsyncTask(this);
         posterAsyncTask.execute(movie.getString("movieposter"));
     }
 
+    // get your posterdata back
     public void SetPoster(Bitmap result) {
         poster = (ImageView) findViewById(R.id.movie_poster);
         poster.setImageBitmap(result);
     }
 
+    // add or delete the movie from the list
     public void add_delete_button(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("add", add);

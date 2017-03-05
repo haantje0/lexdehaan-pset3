@@ -42,8 +42,10 @@ class MovieAsyncTask extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
+        // make the data for the movie
         ArrayList movies = new ArrayList<String>(4);
 
+        // list al the data
         try {
             JSONObject movieStreamObject = new JSONObject(result);
             String resulttitle = movieStreamObject.getString("Title");
@@ -63,6 +65,8 @@ class MovieAsyncTask extends AsyncTask<String, Integer, String> {
             e.printStackTrace();
             Toast.makeText(context, "No such movie found...", Toast.LENGTH_SHORT).show();
         }
+
+        // send data back
         try {
             this.mainAct.movieStartIntent(movies);
         } catch (ExecutionException e) {

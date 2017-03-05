@@ -108,23 +108,30 @@ public class MainActivity extends AppCompatActivity {
         // send a toast
         Toast.makeText(main, "searching for movies...", Toast.LENGTH_SHORT).show();
 
-        //
+        // search the movie
         String moviesearch = search_bar.getText().toString();
         MovieAsyncTask asyncTask = new MovieAsyncTask(this);
         asyncTask.execute(moviesearch);
 
+        // clear the edittext
         search_bar.getText().clear();
     }
 
+    // get searchdata
     public void movieStartIntent(ArrayList<String> movieData) throws ExecutionException, InterruptedException, TimeoutException {
 
         movieArray = movieData;
         makeMovieAdapter();
     }
 
+    // process the searchdata
     public void makeMovieAdapter() {
         Intent intent = new Intent(main, MovieView.class);
+
+        // only process if there is data
         if (movieArray.size() != 0) {
+
+            // change the add/delete boolean
             if (movies.contains(movieArray.get(0))){
                 add = false;
             }
@@ -132,33 +139,44 @@ public class MainActivity extends AppCompatActivity {
                 add = true;
             }
 
+            // put extras in intent
             intent.putExtra("movietitle", movieArray.get(0));
             intent.putExtra("movieposter", movieArray.get(1));
             intent.putExtra("movieyear", movieArray.get(2));
             intent.putExtra("movieplot", movieArray.get(3));
             intent.putExtra("add", add);
 
+            // start movie view
             startActivity(intent);
         }
     }
 
+    // save movies
     public void SaveSharedPreferencesMovies() {
+        // convert to hashset
         Set<String> set = new HashSet<String>();
         set.addAll(movies);
 
+        // make the prefs
         SharedPreferences prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
+        // save the movies
         editor.putStringSet("movies", set);
         editor.commit();
     }
 
+    // load movies
     public void LoadSharedPreferencesMovies() {
+        // make the prefs
         SharedPreferences prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
 
+        // get the movies
         Set<String> moviegetter =  prefs.getStringSet("movies", null);
 
+        // check for result
         if (moviegetter != null) {
+            // change it back
             movies = new ArrayList<String>(moviegetter);
         }
     }
@@ -166,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
+        // save the edittext
         outState.putString("search", search_bar.getText().toString());
 
         super.onSaveInstanceState(outState);
